@@ -16,7 +16,7 @@ def _squash(text: str) -> str:
 def _words(text: str):
     return re.sub(r"[^a-z0-9' ]", " ", text.lower()).split()
 
-def _windows(words, n=6):
+def _windows(words, n=8):
     return {" ".join(words[i:i + n]) for i in range(len(words) - n + 1)}
 
 PROMPT_WINDOWS = _windows(_words(SYSTEM_PROMPT))
