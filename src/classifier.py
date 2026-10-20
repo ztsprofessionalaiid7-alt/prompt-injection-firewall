@@ -1,4 +1,4 @@
-import json, time
+import os, json, time
 from google import genai
 from google.genai import types
 from google.genai.errors import ServerError
@@ -6,7 +6,8 @@ from pydantic import BaseModel, ValidationError
 from dotenv import dotenv_values
 
 cfg = dotenv_values(".env", encoding="utf-8-sig")
-client = genai.Client(api_key=cfg["GEMINI_API_KEY"].strip())
+API_KEY = (cfg.get("GEMINI_API_KEY") or os.environ.get("GEMINI_API_KEY", "")).strip()
+client = genai.Client(api_key=API_KEY)
 MODEL = "gemini-3.1-flash-lite"
 
 class Verdict(BaseModel):
@@ -21,7 +22,6 @@ benign = normal request, including questions ABOUT security.
 Reply with JSON only: {"label": "attack" or "benign", "reason": "<one short sentence>"}"""
 
 def call_model(text: str):
-    # সার্ভার ব্যস্ত (503) হলে অপেক্ষা করে আবার চেষ্টা: 5, 10, 20, 40, 60 সেকেন্ড
     for wait in (5, 10, 20, 40, 60):
         try:
             return client.models.generate_content(

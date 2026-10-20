@@ -53,3 +53,6 @@ Input layer: detection 3/3, false positive 0/7.
 Output check: leak caught 3/3, false positive 0/1.
 Comparison: without firewall 3/3 attacks reach the bot; with firewall 3/3 blocked at input, 0 passed, 0/7 benign wrongly blocked, 0/10 bot answers flagged.
 Caveats: only 3 attacks in the hidden split (random sampling), so 3/3 is a weak signal. Two of the three were caught by the rule layer ("Forget everything", "Vergiss alles"), a pattern common in this dataset. The output-check hidden cases were written by me. Dev (8/9) and hidden (3/3) are reported separately because the classifier prompt was tuned on dev.
+
+## Deploy
+API key is now read from the environment (Streamlit secrets) as well as .env. Added app.py demo. No change to detection logic or prompts; hidden-set results above were produced before this change.s
